@@ -2,16 +2,7 @@ let books = {
   1: {
     author: "Chinua Achebe",
     title: "Things Fall Apart",
-    reviews: {
-      1: {
-        comment: "Test comment",
-        author: "John Doe",
-      },
-      2: {
-        comment: "Test comment 2",
-        author: "Jane Doe",
-      },
-    },
+    reviews: {},
   },
   2: { author: "Hans Christian Andersen", title: "Fairy tales", reviews: {} },
   3: { author: "Dante Alighieri", title: "The Divine Comedy", reviews: {} },

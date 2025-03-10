@@ -27,7 +27,6 @@ regd_users.post("/login", (req, res) => {
   //Write your code here
   const username = req.body.username;
   const password = req.body.password;
-
   if (!username || !password) {
     return res.status(404).json({ message: "Error logging in" });
   }
@@ -40,7 +39,6 @@ regd_users.post("/login", (req, res) => {
       "access",
       { expiresIn: 60 * 60 }
     );
-
     req.session.authorization = {
       accessToken,
       username,
@@ -56,7 +54,34 @@ regd_users.post("/login", (req, res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   //Write your code here
-  return res.status(300).json({ message: "Yet to be implemented" });
+  try {
+    const username = req.session.authorization.username;
+    const isbn = req.params.isbn;
+    const review = req.query.review;
+
+    if (!review || !isbn) {
+      return res.status(400).json({ message: "Review or ISBN not provided!" });
+    }
+
+    const book = books[isbn];
+    if (!book) {
+      return res.status(404).json({ message: "Book not found!" });
+    }
+
+    if (!book.reviews) {
+      book.reviews = {};
+    }
+
+    book.reviews[username] = review;
+
+    return res.status(200).json({
+      message: "Review added/updated successfully!",
+      reviews: book.reviews,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error saving review!" });
+  }
 });
 
 module.exports.authenticated = regd_users;
